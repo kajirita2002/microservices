@@ -25,6 +25,10 @@ func main() {
 		}
 	}
 
-	ctg := db.NewConfig()
-	conn, err := db.NewConnection()
+	cfg := db.NewConfig()
+	conn, err := db.NewConnection(cfg)
+	if err != nil {
+		log.Panicln(err)
+	}
+	defer conn.Close()
 }
