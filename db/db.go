@@ -17,7 +17,7 @@ type conn struct {
 }
 
 func NewConnection(cfg Config) (Connection, error) {
-	fmt.Printf("database url:", cfg.Dsn())
+	fmt.Println("database url:", cfg.Dsn())
 	session, err := mgo.Dial(cfg.Dsn())
 	if err != nil {
 		return nil, err
