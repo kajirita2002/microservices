@@ -6,7 +6,10 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-type Connection interface{}
+type Connection interface {
+	Close()
+	DB() *mgo.Database
+}
 
 type conn struct {
 	session  *mgo.Session
