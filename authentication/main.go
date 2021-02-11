@@ -21,7 +21,7 @@ func main() {
 	if local {
 		err := godotenv.Load()
 		if err != nil {
-			log.Panic(err)
+			log.Panicln(err)
 		}
 	}
 
