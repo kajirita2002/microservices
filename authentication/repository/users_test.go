@@ -19,6 +19,14 @@ func init() {
 	if err != nil {
 		log.Panicln(err)
 	}
+	cfg := db.NewConfig()
+	conn, err := db.NewConnection(cfg)
+	defer conn.Close()
+	r := NewUsersRepository(conn)
+	err = r.(*usersRepository).DeleteAll()
+	if err != nil {
+		log.Panicln(err)
+	}
 }
 
 func TestUsersRepositorySave(t *testing.T) {
@@ -38,7 +46,7 @@ func TestUsersRepositorySave(t *testing.T) {
 		Updated:  time.Now(),
 	}
 
-	r := NewUserRepository(conn)
+	r := NewUsersRepository(conn)
 	err = r.Save(user)
 	assert.NoError(t, err)
 
@@ -66,7 +74,7 @@ func TestUsersRepositoryGetById(t *testing.T) {
 		Updated:  time.Now(),
 	}
 
-	r := NewUserRepository(conn)
+	r := NewUsersRepository(conn)
 	err = r.Save(user)
 
 	assert.NoError(t, err)
@@ -104,7 +112,7 @@ func TestUsersRepositoryGetByEmail(t *testing.T) {
 		Updated:  time.Now(),
 	}
 
-	r := NewUserRepository(conn)
+	r := NewUsersRepository(conn)
 	err = r.Save(user)
 
 	assert.NoError(t, err)
@@ -142,7 +150,7 @@ func TestUsersRepositoryUpdate(t *testing.T) {
 		Updated:  time.Now(),
 	}
 
-	r := NewUserRepository(conn)
+	r := NewUsersRepository(conn)
 	err = r.Save(user)
 	assert.NoError(t, err)
 
@@ -176,14 +184,13 @@ func TestUsersRepositoryDelete(t *testing.T) {
 		Updated:  time.Now(),
 	}
 
-	r := NewUserRepository(conn)
+	r := NewUsersRepository(conn)
 	err = r.Save(user)
 	assert.NoError(t, err)
 
 	found, err := r.GetById(user.Id.Hex())
 	assert.NoError(t, err)
 	assert.NotNil(t, found)
-
 
 	err = r.Delete(user.Id.Hex())
 	assert.NoError(t, err)
