@@ -23,7 +23,7 @@ type usersRepository struct {
 	c *mgo.Collection
 }
 
-func NewUserRepository(conn db.Connection) UsersRepository {
+func NewUsersRepository(conn db.Connection) UsersRepository {
 	return &usersRepository{c: conn.DB().C(UsersCollection)}
 }
 
@@ -55,6 +55,6 @@ func (r *usersRepository) Delete(id string) error {
 	return r.c.RemoveId(bson.ObjectIdHex(id))
 }
 
-func (r *usersRepository) DeleteAll(id string) error {
+func (r *usersRepository) DeleteAll() error {
 	return r.c.DropCollection()
 }
